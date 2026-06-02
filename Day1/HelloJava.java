@@ -1,12 +1,5 @@
-package Helloworld;
-
-public class HelloJava {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("Hello");
-		System.out.println("welcome to Java Ignite Internship");
-		System.out.println("How are you doing");
-	}
-
+class HelloJava {
+    public static void main(String[] args) {
+        System.out.println("Hello Java");
+    }
 }
