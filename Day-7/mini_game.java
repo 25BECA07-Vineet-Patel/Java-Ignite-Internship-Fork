@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 class GameCharacter {
 
@@ -55,9 +56,42 @@ public class mini_game {
 
         GameCharacter player = new GameCharacter("Player", 100, 15);
 
-        GameCharacter dragon = new GameCharacter("Dragon", 100, 10);
+        GameCharacter[] enemies = {
+                new GameCharacter("Dragon", 100, 10),
+                new GameCharacter("Goblin", 80, 8),
+                new GameCharacter("Orc", 120, 12)
+        };
 
-        int choice;
+        System.out.println("================================");
+        System.out.println("       CHOOSE YOUR ENEMY");
+        System.out.println("================================");
+
+        for (int i = 0; i < enemies.length; i++) {
+            System.out.println((i + 1) + ". " + enemies[i].name);
+        }
+
+        GameCharacter currentEnemy = null;
+
+        while (currentEnemy == null) {
+
+            try {
+
+                System.out.print("Enter Enemy Choice: ");
+                int enemyChoice = sc.nextInt();
+
+                if (enemyChoice < 1 || enemyChoice > enemies.length) {
+                    System.out.println("Invalid Enemy Choice!");
+                    continue;
+                }
+
+                currentEnemy = enemies[enemyChoice - 1];
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid Input! Enter a number.");
+                sc.nextLine();
+            }
+        }
 
         while (true) {
 
@@ -66,41 +100,78 @@ public class mini_game {
             System.out.println("==============================");
 
             player.showStats();
-            dragon.showStats();
+            currentEnemy.showStats();
 
             System.out.println("\n1. Attack");
             System.out.println("2. Defend");
             System.out.println("3. Heal");
             System.out.println("4. Exit");
 
-            System.out.print("\nEnter Choice: ");
-            choice = sc.nextInt();
+            int choice;
+
+            try {
+
+                System.out.print("\nEnter Choice: ");
+                choice = sc.nextInt();
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid Input! Enter a number.");
+                sc.nextLine();
+                continue;
+            }
 
             switch (choice) {
 
                 case 1:
 
-                    player.attack(dragon);
+                    player.attack(currentEnemy);
 
-                    if (dragon.getHealth() <= 0) {
+                    if (currentEnemy.getHealth() <= 0) {
 
-                        System.out.println("\nDragon Defeated!");
-                        System.out.println("Player Wins!");
+                        System.out.println("\n" + currentEnemy.name + " Defeated!");
 
-                        sc.close();
-                        return;
+                        boolean allDefeated = true;
+
+                        for (GameCharacter enemy : enemies) {
+
+                            if (enemy.getHealth() > 0) {
+
+                                allDefeated = false;
+
+                                if (enemy != currentEnemy) {
+
+                                    currentEnemy = enemy;
+
+                                    System.out.println(
+                                            "\nA new enemy appears: "
+                                                    + currentEnemy.name);
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (allDefeated) {
+
+                            System.out.println("\nAll Enemies Defeated!");
+                            System.out.println("Player Wins!");
+
+                            sc.close();
+                            return;
+                        }
                     }
 
                     break;
 
                 case 2:
 
-                    dragon.attack(player);
+                    currentEnemy.attack(player);
 
                     if (player.getHealth() <= 0) {
 
                         System.out.println("\nPlayer Defeated!");
-                        System.out.println("Dragon Wins!");
+                        System.out.println("Game Over!");
 
                         sc.close();
                         return;
