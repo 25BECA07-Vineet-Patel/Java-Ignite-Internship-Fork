@@ -54,15 +54,93 @@ public class mini_game {
 
         Scanner sc = new Scanner(System.in);
 
-        GameCharacter player = new GameCharacter("Player", 100, 15);
+        int difficulty = 0;
+
+        while (difficulty < 1 || difficulty > 3) {
+
+            try {
+
+                System.out.println("================================");
+                System.out.println("      SELECT DIFFICULTY");
+                System.out.println("================================");
+                System.out.println("1. Easy");
+                System.out.println("2. Medium");
+                System.out.println("3. Hard");
+
+                System.out.print("Enter Difficulty: ");
+                difficulty = sc.nextInt();
+
+                if (difficulty < 1 || difficulty > 3) {
+                    System.out.println("Invalid Difficulty!");
+                }
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid Input! Enter a number.");
+                sc.nextLine();
+            }
+        }
+
+        int playerHealth = 100;
+        int playerAttack = 15;
+
+        int enemyHealth = 100;
+        int enemyAttack = 12;
+
+        switch (difficulty) {
+
+            case 1:
+
+                playerAttack = 18;
+
+                enemyHealth = 70;
+                enemyAttack = 8;
+
+                break;
+
+            case 2:
+
+                playerAttack = 15;
+
+                enemyHealth = 100;
+                enemyAttack = 12;
+
+                break;
+
+            case 3:
+
+                playerAttack = 12;
+
+                enemyHealth = 130;
+                enemyAttack = 16;
+
+                break;
+        }
+
+        GameCharacter player = new GameCharacter(
+                "Player",
+                playerHealth,
+                playerAttack);
 
         GameCharacter[] enemies = {
-                new GameCharacter("Dragon", 100, 10),
-                new GameCharacter("Goblin", 80, 8),
-                new GameCharacter("Orc", 120, 12)
+
+                new GameCharacter(
+                        "Dragon",
+                        enemyHealth,
+                        enemyAttack),
+
+                new GameCharacter(
+                        "Goblin",
+                        enemyHealth,
+                        enemyAttack),
+
+                new GameCharacter(
+                        "Orc",
+                        enemyHealth,
+                        enemyAttack)
         };
 
-        System.out.println("================================");
+        System.out.println("\n================================");
         System.out.println("       CHOOSE YOUR ENEMY");
         System.out.println("================================");
 
@@ -129,7 +207,8 @@ public class mini_game {
 
                     if (currentEnemy.getHealth() <= 0) {
 
-                        System.out.println("\n" + currentEnemy.name + " Defeated!");
+                        System.out.println(
+                                "\n" + currentEnemy.name + " Defeated!");
 
                         boolean allDefeated = true;
 
@@ -154,7 +233,8 @@ public class mini_game {
 
                         if (allDefeated) {
 
-                            System.out.println("\nAll Enemies Defeated!");
+                            System.out.println(
+                                    "\nAll Enemies Defeated!");
                             System.out.println("Player Wins!");
 
                             sc.close();
