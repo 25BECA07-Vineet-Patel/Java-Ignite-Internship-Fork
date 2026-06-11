@@ -8,7 +8,7 @@ class InvalidMarksException extends Exception {
     }
 }
 
-public class student_mark {
+public class student_mark1 {
 
     // throws used in method signature
     static void validateMarks(int marks)
